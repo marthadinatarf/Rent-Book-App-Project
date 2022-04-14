@@ -3,6 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"rent-book-app-project/datastore"
+	"rent-book-app-project/schema"
+
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -48,23 +52,19 @@ func ReadEnv() Config {
 }
 
 func main() {
+
 	config := ReadEnv()
-	db := ConnectDB(config)
-	fmt.Println(db)
 
-	//userLogin := login.UserDB{Db: db}
+	conn := ConnectDB(config)
 
-	var emailGet, passGet string
-	fmt.Println("Masukkan email : ")
-	fmt.Scan(&emailGet)
-	fmt.Println("Masukkan Password : ")
-	fmt.Scan(&passGet)
-	if emailGet == "admin" && passGet == "admin" {
-		fmt.Println("berhasil login")
-	} else {
-		fmt.Println("Email dan password salah")
+	fmt.Println(conn)
+	fmt.Println(conn.Error)
+
+	func Register(nama,hp,alamat,email,password string){
+		userAcc := datastore.UserDB{Db: conn}
+		res,err = userAcc.RegisterUser(schema.User{Nama: &nama, Hp: &hp, Alamat: &alamat,Email: &email, Password: &password})
+		return res.Ro 
 	}
 
-	//GetDataEmail(emailGet, passwordGet)
 
 }
