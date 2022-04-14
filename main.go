@@ -3,10 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"rent-book-app-project/datastore"
-	"rent-book-app-project/schema"
-
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -52,19 +48,23 @@ func ReadEnv() Config {
 }
 
 func main() {
-
 	config := ReadEnv()
+	db := ConnectDB(config)
+	fmt.Println(db)
 
-	conn := ConnectDB(config)
+	var pilihan int
+	fmt.Println("====== Menu Utama ======")
+	fmt.Println("1. Register")
+	fmt.Println("2. Login")
+	fmt.Println("3. Lihat Daftar Buku")
+	fmt.Println("4. Keluar")
+	fmt.Println("Masukkan pilihan : ")
+	fmt.Scan(pilihan)
 
-	fmt.Println(conn)
-	fmt.Println(conn.Error)
-
-	func Register(nama,hp,alamat,email,password string){
-		userAcc := datastore.UserDB{Db: conn}
-		res,err = userAcc.RegisterUser(schema.User{Nama: &nama, Hp: &hp, Alamat: &alamat,Email: &email, Password: &password})
-		return res.Ro 
-	}
-
+	// switch pilihan {
+	// case 1:
+	// 	login.LoginUser()
+	// case
+	// }
 
 }
