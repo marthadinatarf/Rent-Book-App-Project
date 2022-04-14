@@ -71,7 +71,7 @@ func main() {
 		fmt.Println("2. Login")
 		fmt.Println("3. Lihat Daftar Buku")
 		fmt.Println("4. Keluar")
-		fmt.Println("Masukkan pilihan : ")
+		fmt.Print("Masukkan pilihan : ")
 		fmt.Scan(&pilihan)
 
 		if pilihan == 1 {
@@ -80,8 +80,16 @@ func main() {
 			fmt.Scan(&users.Hp)
 			fmt.Scan(&users.Alamat)
 			fmt.Scan(&users.Email)
+			fmt.Scan(&users.Password)
 
-			res, err := userAcc.RegisterUser(schema.User{Nama: users.Nama, Hp: users.Hp, Alamat: users.Alamat, Email: users.Email, Password: users.Password})
+			res, err := userAcc.RegisterUser(
+				schema.User{
+					Nama:     users.Nama,
+					Hp:       users.Hp,
+					Alamat:   users.Alamat,
+					Email:    users.Email,
+					Password: users.Password,
+				})
 			if err != nil {
 				fmt.Println(err)
 
@@ -105,18 +113,5 @@ func main() {
 	// 	}
 	// 	fmt.Println(res)
 	// }
-
-	// var emailGet, passGet string
-	// fmt.Println("Masukkan email : ")
-	// fmt.Scan(&emailGet)
-	// fmt.Println("Masukkan Password : ")
-	// fmt.Scan(&passGet)
-	// if emailGet == "admin" && passGet == "admin" {
-	// 	fmt.Println("berhasil login")
-	// } else {
-	// 	fmt.Println("Email dan password salah")
-	// }
-
-	//GetDataEmail(emailGet, passwordGet)
 
 }

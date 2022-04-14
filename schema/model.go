@@ -11,6 +11,7 @@ type User struct {
 	Alamat   string
 	Email    string
 	Password string
+	Book     []Book
 }
 
 type Book struct {
@@ -19,4 +20,5 @@ type Book struct {
 	Penerbit    string
 	Penulis     string
 	TahunTerbit int
+	UserID      uint
 }
