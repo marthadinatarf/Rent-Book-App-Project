@@ -64,10 +64,47 @@ func main() {
 	// akses user datastore
 	userAcc := datastore.UserDB{Db: db}
 
-	var users schema.User
-	fmt.Scan(&users.Nama)
+	var pilihan int
+	for pilihan != 4 {
+		fmt.Println("====== Menu Utama ======")
+		fmt.Println("1. Register")
+		fmt.Println("2. Login")
+		fmt.Println("3. Lihat Daftar Buku")
+		fmt.Println("4. Keluar")
+		fmt.Println("Masukkan pilihan : ")
+		fmt.Scan(&pilihan)
 
-	_, err = userAcc.RegisterUser(schema.User{Nama: users.Nama, Hp: users.Hp, Alamat: users.Alamat, Email: users.Email, Password: users.Password})
+		if pilihan == 1 {
+			var users schema.User
+			fmt.Scan(&users.Nama)
+			fmt.Scan(&users.Hp)
+			fmt.Scan(&users.Alamat)
+			fmt.Scan(&users.Email)
+
+			res, err := userAcc.RegisterUser(schema.User{Nama: users.Nama, Hp: users.Hp, Alamat: users.Alamat, Email: users.Email, Password: users.Password})
+			if err != nil {
+				fmt.Println(err)
+
+			}
+			fmt.Println(res)
+		}
+	}
+
+	// switch pilihan {
+	// case 1:
+	// 	var users schema.User
+	// 	fmt.Scan(&users.Nama)
+	// 	fmt.Scan(&users.Hp)
+	// 	fmt.Scan(&users.Alamat)
+	// 	fmt.Scan(&users.Email)
+
+	// 	res, err := userAcc.RegisterUser(schema.User{Nama: users.Nama, Hp: users.Hp, Alamat: users.Alamat, Email: users.Email, Password: users.Password})
+	// 	if err != nil {
+	// 		fmt.Println(err)
+
+	// 	}
+	// 	fmt.Println(res)
+	// }
 
 	// var emailGet, passGet string
 	// fmt.Println("Masukkan email : ")

@@ -22,7 +22,7 @@ func (u *UserDB) GetDataEmail(ambilEmail, ambilPassword string) ([]schema.User, 
 }
 
 func (u *UserDB) RegisterUser(addUser schema.User) (schema.User, error) {
-	if err := u.Db.Select("Nama", "Hp", "Alamat", "Email", "Password").Create(&addUser).Error; err != nil {
+	if err := u.Db.Create(&addUser).Error; err != nil {
 		fmt.Println("Terjadi kesalahan saat register user", err)
 		return addUser, err
 	}
