@@ -52,19 +52,4 @@ func main() {
 	db := ConnectDB(config)
 	fmt.Println(db)
 
-	//userLogin := login.UserDB{Db: db}
-
-	var emailGet, passGet string
-	fmt.Println("Masukkan email : ")
-	fmt.Scan(&emailGet)
-	fmt.Println("Masukkan Password : ")
-	fmt.Scan(&passGet)
-	if emailGet == "admin" && passGet == "admin" {
-		fmt.Println("berhasil login")
-	} else {
-		fmt.Println("Email dan password salah")
-	}
-
-	//GetDataEmail(emailGet, passwordGet)
-
 }

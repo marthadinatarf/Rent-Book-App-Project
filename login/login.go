@@ -21,12 +21,15 @@ func (u *UserDB) GetDataEmail(ambilEmail, ambilPassword string) ([]entitas.User,
 	return res, nil
 }
 
-// func LoginUser() {
-// var emailGet, passGet string
-// fmt.Println("Masukkan email : ")
-// fmt.Scanf("%s", emailGet)
-// fmt.Println("Masukkan Password : ")
-// fmt.Scanf("%s", passGet)
-// _, err := GetDataEmail(emailGet, passGet)
-// GetDataEmail(emailGet, passwordGet)
-// }
+func LoginUser() {
+	var emailGet, passGet string
+	fmt.Println("Masukkan email : ")
+	fmt.Scan(&emailGet)
+	fmt.Println("Masukkan Password : ")
+	fmt.Scan(&passGet)
+	if emailGet == "admin" && passGet == "admin" {
+		fmt.Println("berhasil login")
+	} else {
+		fmt.Println("Email dan password salah")
+	}
+}
