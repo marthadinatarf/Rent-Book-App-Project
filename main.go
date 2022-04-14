@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"rent-book-app-project/datastore"
+	"rent-book-app-project/schema"
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -23,7 +25,7 @@ func ReadEnv() Config {
 		fmt.Println("ERROR LOAD FILE", err)
 	}
 	res := Config{}
-	res.Username = os.Getenv("USERNAME")
+	res.Username = os.Getenv("USER_NAME")
 	res.DB = os.Getenv("DATABASE")
 	res.Password = os.Getenv("PASSWORD")
 	res.Host = os.Getenv("HOST")
@@ -56,5 +58,11 @@ func main() {
 
 	fmt.Println(conn)
 	fmt.Println(conn.Error)
+
+	func Register(nama,hp,alamat,email,password string){
+		userAcc := datastore.UserDB{Db: conn}
+		res,err = userAcc.RegisterUser(schema.User{Nama: &nama, Hp: &hp, Alamat: &alamat,Email: &email, Password: &password})
+		return res.Ro 
+	}
 
 }
