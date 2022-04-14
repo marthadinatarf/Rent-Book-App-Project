@@ -52,4 +52,19 @@ func main() {
 	db := ConnectDB(config)
 	fmt.Println(db)
 
+	var pilihan int
+	fmt.Println("====== Menu Utama ======")
+	fmt.Println("1. Register")
+	fmt.Println("2. Login")
+	fmt.Println("3. Lihat Daftar Buku")
+	fmt.Println("4. Keluar")
+	fmt.Println("Masukkan pilihan : ")
+	fmt.Scan(pilihan)
+
+	// switch pilihan {
+	// case 1:
+	// 	login.LoginUser()
+	// case
+	// }
+
 }
