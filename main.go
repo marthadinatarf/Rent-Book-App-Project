@@ -59,28 +59,37 @@ func main() {
 	db := ConnectDB(config)
 
 	//membuat database migration
-	//db.AutoMigrate(&schema.User{}, &schema.Book{})
+	// db.AutoMigrate(&schema.User{}, &schema.Book{})
 
-	// akses user datastore
+	// akses datastore
 	userAcc := datastore.UserDB{Db: db}
+	// bookAcc := datastore.BookDB{Db: db}
 
 	var pilihan int
-	for pilihan != 4 {
-		fmt.Println("====== Menu Utama ======")
-		fmt.Println("1. Register")
-		fmt.Println("2. Login")
-		fmt.Println("3. Lihat Daftar Buku")
-		fmt.Println("4. Keluar")
-		fmt.Print("Masukkan pilihan : ")
-		fmt.Scan(&pilihan)
-
-		if pilihan == 1 {
+	for pilihan != 99 {
+		fmt.Println("")
+		fmt.Println("======= Menu Utama =======")
+		fmt.Println("1.\tRegister")
+		fmt.Println("2.\tLogin")
+		fmt.Println("3.\tLihat Daftar Buku")
+		fmt.Println("99.\tKeluar")
+		fmt.Println("=+=+=+=+=+=+=+=+=+=+=+=+=+")
+		fmt.Print("input menu pilihan : ")
+		fmt.Scanln(&pilihan)
+		fmt.Println("")
+		switch pilihan {
+		case 1:
 			var users schema.User
-			fmt.Scan(&users.Nama)
-			fmt.Scan(&users.Hp)
-			fmt.Scan(&users.Alamat)
-			fmt.Scan(&users.Email)
-			fmt.Scan(&users.Password)
+			fmt.Print("Masukkan nama: ")
+			fmt.Scanln(&users.Nama)
+			fmt.Print("Masukkan nomor hp: ")
+			fmt.Scanln(&users.Hp)
+			fmt.Print("Masukkan alamat: ")
+			fmt.Scanln(&users.Alamat)
+			fmt.Print("Masukkan email: ")
+			fmt.Scanln(&users.Email)
+			fmt.Print("Masukkan password: ")
+			fmt.Scanln(&users.Password)
 
 			res, err := userAcc.RegisterUser(
 				schema.User{
@@ -95,23 +104,15 @@ func main() {
 
 			}
 			fmt.Println(res)
-		}
-	}
-
-	// switch pilihan {
-	// case 1:
-	// 	var users schema.User
-	// 	fmt.Scan(&users.Nama)
-	// 	fmt.Scan(&users.Hp)
-	// 	fmt.Scan(&users.Alamat)
-	// 	fmt.Scan(&users.Email)
-
-	// 	res, err := userAcc.RegisterUser(schema.User{Nama: users.Nama, Hp: users.Hp, Alamat: users.Alamat, Email: users.Email, Password: users.Password})
-	// 	if err != nil {
-	// 		fmt.Println(err)
-
-	// 	}
-	// 	fmt.Println(res)
-	// }
-
-}
+		case 2:
+			fmt.Println("Pilihan menu ke 2")
+		case 3:
+			fmt.Println("Pilihan menu ke 3")
+		case 99:
+			fmt.Println("Terimakasih banyak sudah mencoba program kami.")
+			return
+		default:
+			fmt.Println("Maaf, pilihan inputan menu tidak tersedia!")
+		} //end switch
+	} //end loop
+} //end main

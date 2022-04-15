@@ -11,7 +11,7 @@ type User struct {
 	Alamat   string
 	Email    string
 	Password string
-	Book     []Book
+	Books    []Book
 }
 
 type Book struct {
