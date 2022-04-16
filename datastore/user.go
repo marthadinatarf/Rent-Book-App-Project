@@ -7,37 +7,51 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserDB struct {
-	Db *gorm.DB
+func InsertUser(db *gorm.DB, newUser schema.User) (schema.User, error) {
+	res := db.Create(&newUser)
+
+	if res.Error != nil {
+		fmt.Println("Insert User Error : ", res.Error)
+		return schema.User{}, res.Error
+	}
+
+	return newUser, nil
 }
 
-func (u *UserDB) GetDataEmail(ambilEmail, ambilPassword string) ([]schema.User, error) {
+func GetAllUser(db *gorm.DB) ([]schema.User, error) {
 	res := []schema.User{}
 
-	if err := u.Db.Table("user").Where("email = ? and password = ?", ambilEmail, ambilPassword).Find(&res).Error; err != nil {
-		fmt.Println("Terjadi kesalahan !!", err)
-		return []schema.User{}, err
+	qry := db.Find(&res)
+
+	if qry.Error != nil {
+		fmt.Println("Error Select All User: ", qry.Error)
+		return nil, qry.Error
 	}
+
 	return res, nil
 }
 
-func (u *UserDB) RegisterUser(addUser schema.User) (schema.User, error) {
-	if err := u.Db.Create(&addUser).Error; err != nil {
-		fmt.Println("Terjadi kesalahan saat register user", err)
-		return addUser, err
+func GetUserLogin(db *gorm.DB, email, password string) (schema.User, error) {
+	usr := schema.User{}
+
+	qry := db.Where("email = ? and password = ?", email, password).First(&usr)
+
+	if qry.Error != nil {
+		fmt.Println("Error Select User Login: ", qry.Error)
+		return schema.User{}, qry.Error
 	}
-	return addUser, nil
+
+	return usr, nil
 }
 
-func LoginUser() {
-	var emailGet, passGet string
-	fmt.Println("Masukkan email : ")
-	fmt.Scan(&emailGet)
-	fmt.Println("Masukkan Password : ")
-	fmt.Scan(&passGet)
-	if emailGet == "admin" && passGet == "admin" {
-		fmt.Println("berhasil login")
-	} else {
-		fmt.Println("Email dan password salah")
+func UpdateUser(db *gorm.DB, updatedUser schema.User) (schema.User, error) {
+	//fmt.Println(updatedUser)
+	qry := db.Save(&updatedUser)
+
+	if qry.Error != nil {
+		fmt.Println("Error Update User: ", qry.Error)
+		return schema.User{}, qry.Error
 	}
+
+	return updatedUser, nil
 }
