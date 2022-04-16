@@ -55,3 +55,13 @@ func UpdateUser(db *gorm.DB, updatedUser schema.User) (schema.User, error) {
 
 	return updatedUser, nil
 }
+
+func DeleteUser(db *gorm.DB, deleteUser schema.User) (schema.User, error) {
+	res := db.Delete(&deleteUser)
+
+	if res.Error != nil {
+		fmt.Println("Error delete user : ", res.Error)
+		return schema.User{}, res.Error
+	}
+	return deleteUser, nil
+}
