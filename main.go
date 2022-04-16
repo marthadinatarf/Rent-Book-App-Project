@@ -139,7 +139,7 @@ func main() {
 		case 2:
 			MenuLogin(dbConn)
 		case 3:
-			fmt.Println("Delete Profile")
+			//tampilkanBuku(dbConn)
 		case 99:
 			fmt.Println("Terimakasih banyak sudah mencoba program kami.")
 			return
