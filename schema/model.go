@@ -28,8 +28,8 @@ type Book struct {
 
 type Transactions struct {
 	gorm.Model
-	UserID      uint
-	BookID      uint
-	tgl_pinjam  time.Time
-	tgl_kembali time.Time
+	TanggalPinjam  time.Time
+	TanggalKembali time.Time
+	UserID         uint
+	BookID         uint
 }
