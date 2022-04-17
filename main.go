@@ -82,22 +82,27 @@ func MenuLogin(dbConn *gorm.DB) {
 	res, _ := datastore.GetUserLogin(dbConn, email, password)
 	if email == res.Email && password == res.Password {
 		fmt.Println(res.Nama, "Berhasi Login")
+		fmt.Println("")
+		id := res.ID
 		for input != 9 {
-			fmt.Println("Halo, ", res.Nama)
-			fmt.Println("1. Update Profil")
-			fmt.Println("2. Pinjam Buku")
-			fmt.Println("3. Update Buku")
-			fmt.Println("4. Delete Buku")
-			fmt.Println("5. Tampilkan Semua data buku")
-			fmt.Println("9. Logout")
-			fmt.Print("Masukkan pilihan menu :")
+			fmt.Println("\t=========== DASHBOARD ===========")
+			fmt.Println("\t]> Selamat Datang,", res.Nama)
+			fmt.Println("\t---------------------------------")
+			fmt.Println("\t1.\tUpdate Profil")
+			fmt.Println("\t2.\tTambah Buku")
+			fmt.Println("\t3.\tUpdate Buku")
+			fmt.Println("\t4.\tDelete Buku")
+			fmt.Println("\t5.\tDaftar Buku Saya")
+			fmt.Println("\t6.\tPinjam Buku")
+			fmt.Println("\t7.\tKembalikan Buku")
+			fmt.Println("\t8.\tLogout")
+			fmt.Println("\t= = = = = = = = = = = = = = = = =")
+			fmt.Print("\tMasukkan pilihan menu :")
 			fmt.Scanln(&input)
 			if input == 1 {
 				var nama string
-				id := res.ID
 				fmt.Print("Ganti Nama : ")
 				fmt.Scanln(&nama)
-
 				updateNama, err := datastore.UpdateUser(dbConn, nama, id)
 				if err != nil {
 					fmt.Println("terjadi sebuah kesalahan :", err)
@@ -105,9 +110,8 @@ func MenuLogin(dbConn *gorm.DB) {
 				res.Nama = updateNama.Nama
 			} else if input == 2 {
 				var newBook schema.Book
-				fmt.Print("Masukkan Id User :")
-				fmt.Scanln(&newBook.UserID)
-				fmt.Print("Masukkan Judul :")
+
+				fmt.Print("Masukkan Judul Buku:")
 				fmt.Scanln(&newBook.Judul)
 				fmt.Print("Masukkan Penerbit :")
 				fmt.Scanln(&newBook.Penerbit)
@@ -120,7 +124,7 @@ func MenuLogin(dbConn *gorm.DB) {
 				if err != nil {
 					fmt.Println("terjadi sebuah kesalahan :", err)
 				}
-				fmt.Println("Buku berhasil dipinjamkan")
+				fmt.Println("Buku berhasil ditambahkan")
 			} else if input == 3 {
 				var newBook schema.Book
 				fmt.Println("Ganti Judul : ")
@@ -163,7 +167,7 @@ func main() {
 	// make connection to mysql database
 	dbConn := ConnectDB(config)
 
-	//membuat database migration
+	// membuat database migration
 	// dbConn.AutoMigrate(
 	// 	&schema.User{},
 	// 	&schema.Book{},

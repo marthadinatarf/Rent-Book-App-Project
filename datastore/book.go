@@ -34,7 +34,7 @@ func TampilkanBuku(db *gorm.DB) ([]schema.Book, error) {
 	qry := db.Find(&res)
 
 	if qry.Error != nil {
-		fmt.Println("Error Select All User: ", qry.Error)
+		fmt.Println("Terjadi kesalahan saat menampilkan buku: ", qry.Error)
 		return nil, qry.Error
 	}
 
@@ -45,7 +45,7 @@ func DeleteBuku(db *gorm.DB, deleteBook schema.Book) (schema.Book, error) {
 	res := db.Delete(&deleteBook)
 
 	if res.Error != nil {
-		fmt.Println("Error delete user : ", res.Error)
+		fmt.Println("Terjadi kesalahan saat delete buku : ", res.Error)
 		return schema.Book{}, res.Error
 	}
 	return deleteBook, nil
