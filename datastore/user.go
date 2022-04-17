@@ -34,7 +34,7 @@ func GetAllUser(db *gorm.DB) ([]schema.User, error) {
 func GetUserLogin(db *gorm.DB, email, password string) (schema.User, error) {
 	usr := schema.User{}
 
-	qry := db.Where("email = ? and password = ?", email, password).First(&usr)
+	qry := db.Select("id", "nama", "email", "password").Where("email = ? and password = ?", email, password).Find(&usr)
 
 	if qry.Error != nil {
 		fmt.Println("Error Select User Login: ", qry.Error)
@@ -44,16 +44,16 @@ func GetUserLogin(db *gorm.DB, email, password string) (schema.User, error) {
 	return usr, nil
 }
 
-func UpdateUser(db *gorm.DB, updatedUser schema.User) (schema.User, error) {
-	//fmt.Println(updatedUser)
-	qry := db.Save(&updatedUser)
+func UpdateUser(db *gorm.DB, updateNama string, id uint) (schema.User, error) {
+	user := schema.User{}
+	qry := db.Model(&user).Where("id = ?", id).Update("nama", updateNama)
 
 	if qry.Error != nil {
 		fmt.Println("Error Update User: ", qry.Error)
 		return schema.User{}, qry.Error
 	}
 
-	return updatedUser, nil
+	return user, nil
 }
 
 func DeleteUser(db *gorm.DB, deleteUser schema.User) (schema.User, error) {

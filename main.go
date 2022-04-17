@@ -52,95 +52,101 @@ func ConnectDB(cfg Config) *gorm.DB {
 
 func MenuRegister(dbConn *gorm.DB) {
 	var newUser schema.User
-	fmt.Print("Masukkan Nama :")
+	fmt.Print("Masukkan Nama : ")
 	fmt.Scanln(&newUser.Nama)
-	fmt.Print("Masukkan HP :")
+	fmt.Print("Masukkan HP : ")
 	fmt.Scanln(&newUser.Hp)
-	fmt.Print("Masukkan Alamat :")
+	fmt.Print("Masukkan Alamat : ")
 	fmt.Scanln(&newUser.Alamat)
-	fmt.Print("Masukkan Email :")
+	fmt.Print("Masukkan Email : ")
 	fmt.Scanln(&newUser.Email)
-	fmt.Print("Masukkan Password :")
+	fmt.Print("Masukkan Password : ")
 	fmt.Scanln(&newUser.Password)
 
 	res, err := datastore.InsertUser(dbConn, newUser)
 	if err != nil {
 		fmt.Println("terjadi sebuah kesalahan :", err)
 	}
-	fmt.Println(res.Nama, " Berhasil Didaftarkan")
+	fmt.Println(res.Nama, "Berhasil Didaftarkan")
 }
 
 func MenuLogin(dbConn *gorm.DB) {
-	var userLogin schema.User
+	// var userLogin schema.User
+	var email, password string
 	var input int
 	fmt.Print("Masukkan Email : ")
-	fmt.Scanln(&userLogin.Email)
+	fmt.Scanln(&email)
 	fmt.Print("Masukkan Password : ")
-	fmt.Scanln(&userLogin.Password)
+	fmt.Scanln(&password)
 
-	res, err := datastore.GetUserLogin(dbConn, userLogin.Email, userLogin.Password)
-	if err != nil {
-		fmt.Println("terjadi sebuah kesalahan :", err)
-	}
-	fmt.Println(res.Nama, "Berhasi Login")
-	for input != 9 {
-		fmt.Println("Halo, ", res.Nama)
-		fmt.Println("1. Update Profil")
-		fmt.Println("2. Pinjam Buku")
-		fmt.Println("3. Update Buku")
-		fmt.Println("4. Delete Buku")
-		fmt.Println("5. Tampilkan Semua data buku")
-		fmt.Println("9. Logout")
-		fmt.Print("Masukkan pilihan menu :")
-		fmt.Scanln(&input)
-		if input == 1 {
-			fmt.Print("Ganti Nama :")
-			fmt.Scanln(&userLogin.Nama)
+	res, _ := datastore.GetUserLogin(dbConn, email, password)
+	if email == res.Email && password == res.Password {
+		fmt.Println(res.Nama, "Berhasi Login")
+		for input != 9 {
+			fmt.Println("Halo, ", res.Nama)
+			fmt.Println("1. Update Profil")
+			fmt.Println("2. Pinjam Buku")
+			fmt.Println("3. Update Buku")
+			fmt.Println("4. Delete Buku")
+			fmt.Println("5. Tampilkan Semua data buku")
+			fmt.Println("9. Logout")
+			fmt.Print("Masukkan pilihan menu :")
+			fmt.Scanln(&input)
+			if input == 1 {
+				var nama string
+				id := res.ID
+				fmt.Print("Ganti Nama : ")
+				fmt.Scanln(&nama)
 
-			userLogin, err = datastore.UpdateUser(dbConn, userLogin)
-			if err != nil {
-				fmt.Println("terjadi sebuah kesalahan :", err)
-			}
-		} else if input == 2 {
-			var newBook schema.Book
-			fmt.Print("Masukkan Id User :")
-			fmt.Scanln(&newBook.UserID)
-			fmt.Print("Masukkan Judul :")
-			fmt.Scanln(&newBook.Judul)
-			fmt.Print("Masukkan Penerbit :")
-			fmt.Scanln(&newBook.Penerbit)
-			fmt.Print("Masukkan Penulis :")
-			fmt.Scanln(&newBook.Penulis)
-			fmt.Print("Masukkan tahun terbit :")
-			fmt.Scanln(&newBook.TahunTerbit)
+				updateNama, err := datastore.UpdateUser(dbConn, nama, id)
+				if err != nil {
+					fmt.Println("terjadi sebuah kesalahan :", err)
+				}
+				res.Nama = updateNama.Nama
+			} else if input == 2 {
+				var newBook schema.Book
+				fmt.Print("Masukkan Id User :")
+				fmt.Scanln(&newBook.UserID)
+				fmt.Print("Masukkan Judul :")
+				fmt.Scanln(&newBook.Judul)
+				fmt.Print("Masukkan Penerbit :")
+				fmt.Scanln(&newBook.Penerbit)
+				fmt.Print("Masukkan Penulis :")
+				fmt.Scanln(&newBook.Penulis)
+				fmt.Print("Masukkan tahun terbit :")
+				fmt.Scanln(&newBook.TahunTerbit)
 
-			_, err := datastore.InsertBuku(dbConn, newBook)
-			if err != nil {
-				fmt.Println("terjadi sebuah kesalahan :", err)
+				_, err := datastore.InsertBuku(dbConn, newBook)
+				if err != nil {
+					fmt.Println("terjadi sebuah kesalahan :", err)
+				}
+				fmt.Println("Buku berhasil dipinjamkan")
+			} else if input == 3 {
+				var newBook schema.Book
+				fmt.Println("Ganti Judul : ")
+				fmt.Scanln(&newBook.Judul)
+				_, err := datastore.UpdateBuku(dbConn, newBook)
+				if err != nil {
+					fmt.Println("terjadi sebuah kesalahan :", err)
+				}
+				fmt.Println("Buku berhasil diupdate")
+			} else if input == 4 {
+				var newBook schema.Book
+				fmt.Println("Hapus Buku : ")
+				fmt.Scanln(&newBook.Judul)
+				_, err := datastore.DeleteBuku(dbConn, newBook)
+				if err != nil {
+					fmt.Println("terjadi sebuah kesalahan :", err)
+				}
+				fmt.Println("Buku berhasil dihapus")
 			}
-			fmt.Println("Buku berhasil dipinjamkan")
-		} else if input == 3 {
-			var newBook schema.Book
-			fmt.Println("Ganti Judul : ")
-			fmt.Scanln(&newBook.Judul)
-			_, err = datastore.UpdateBuku(dbConn, newBook)
-			if err != nil {
-				fmt.Println("terjadi sebuah kesalahan :", err)
-			}
-			fmt.Println("Buku berhasil diupdate")
-		} else if input == 4 {
-			var newBook schema.Book
-			fmt.Println("Hapus Buku : ")
-			fmt.Scanln(&newBook.Judul)
-			_, err = datastore.DeleteBuku(dbConn, newBook)
-			if err != nil {
-				fmt.Println("terjadi sebuah kesalahan :", err)
-			}
-			fmt.Println("Buku berhasil dihapus")
 		}
-
+	} else {
+		fmt.Println("email dan password salah")
+		return
 	}
 }
+
 func SelectBuku(dbConn *gorm.DB) {
 	tampilBuku, err := datastore.TampilkanBuku(dbConn)
 	if err != nil {
@@ -158,12 +164,11 @@ func main() {
 	dbConn := ConnectDB(config)
 
 	//membuat database migration
-	//db.AutoMigrate(&schema.User{}, &schema.Book{})
-
-	// akses datastore
-	// userAcc := datastore.UserDB{Db: db}
-	// loginAcc := datastore.UserDB{Db: db}
-	// updateAcc := datastore.UserDB{Db: db}
+	// dbConn.AutoMigrate(
+	// 	&schema.User{},
+	// 	&schema.Book{},
+	// 	&schema.Transactions{},
+	// )
 
 	var pilihan int
 	for pilihan != 99 {
