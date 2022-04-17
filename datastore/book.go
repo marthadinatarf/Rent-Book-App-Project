@@ -18,14 +18,14 @@ func InsertBuku(db *gorm.DB, newBook schema.Book) (schema.Book, error) {
 	return newBook, nil
 }
 
-func UpdateBuku(db *gorm.DB, updateBook schema.Book) (schema.Book, error) {
-	res := db.Save(&updateBook)
+func UpdateBuku(db *gorm.DB, updateJudul schema.Book) (schema.Book, error) {
+	res := db.Save(&updateJudul)
 
 	if res.Error != nil {
 		fmt.Println("Update Book Error : ", res.Error)
 		return schema.Book{}, res.Error
 	}
-	return updateBook, nil
+	return updateJudul, nil
 }
 
 func TampilkanBuku(db *gorm.DB) ([]schema.Book, error) {
@@ -39,4 +39,14 @@ func TampilkanBuku(db *gorm.DB) ([]schema.Book, error) {
 	}
 
 	return res, nil
+}
+
+func DeleteBuku(db *gorm.DB, deleteBook schema.Book) (schema.Book, error) {
+	res := db.Delete(&deleteBook)
+
+	if res.Error != nil {
+		fmt.Println("Error delete user : ", res.Error)
+		return schema.Book{}, res.Error
+	}
+	return deleteBook, nil
 }

@@ -101,8 +101,52 @@ func MenuLogin(dbConn *gorm.DB) {
 			if err != nil {
 				fmt.Println("terjadi sebuah kesalahan :", err)
 			}
+		} else if input == 2 {
+			var newBook schema.Book
+			fmt.Print("Masukkan Id User :")
+			fmt.Scanln(&newBook.UserID)
+			fmt.Print("Masukkan Judul :")
+			fmt.Scanln(&newBook.Judul)
+			fmt.Print("Masukkan Penerbit :")
+			fmt.Scanln(&newBook.Penerbit)
+			fmt.Print("Masukkan Penulis :")
+			fmt.Scanln(&newBook.Penulis)
+			fmt.Print("Masukkan tahun terbit :")
+			fmt.Scanln(&newBook.TahunTerbit)
+
+			_, err := datastore.InsertBuku(dbConn, newBook)
+			if err != nil {
+				fmt.Println("terjadi sebuah kesalahan :", err)
+			}
+			fmt.Println("Buku berhasil dipinjamkan")
+		} else if input == 3 {
+			var newBook schema.Book
+			fmt.Println("Ganti Judul : ")
+			fmt.Scanln(&newBook.Judul)
+			_, err = datastore.UpdateBuku(dbConn, newBook)
+			if err != nil {
+				fmt.Println("terjadi sebuah kesalahan :", err)
+			}
+			fmt.Println("Buku berhasil diupdate")
+		} else if input == 4 {
+			var newBook schema.Book
+			fmt.Println("Hapus Buku : ")
+			fmt.Scanln(&newBook.Judul)
+			_, err = datastore.DeleteBuku(dbConn, newBook)
+			if err != nil {
+				fmt.Println("terjadi sebuah kesalahan :", err)
+			}
+			fmt.Println("Buku berhasil dihapus")
 		}
+
 	}
+}
+func SelectBuku(dbConn *gorm.DB) {
+	tampilBuku, err := datastore.TampilkanBuku(dbConn)
+	if err != nil {
+		fmt.Println("terjadi sebuah kesalahan :", err)
+	}
+	fmt.Println(tampilBuku)
 }
 
 func main() {
@@ -139,7 +183,7 @@ func main() {
 		case 2:
 			MenuLogin(dbConn)
 		case 3:
-			//tampilkanBuku(dbConn)
+			SelectBuku(dbConn)
 		case 99:
 			fmt.Println("Terimakasih banyak sudah mencoba program kami.")
 			return
