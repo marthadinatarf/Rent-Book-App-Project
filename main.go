@@ -150,7 +150,7 @@ func MenuLogin(dbConn *gorm.DB) {
 				fmt.Scanln(&books.Penulis)
 				fmt.Print("Edit Tahun Terbit : ")
 				fmt.Scanln(&books.TahunTerbit)
-				res, err := datastore.UpdateBuku(dbConn, books.ID, schema.Book{
+				_, err := datastore.UpdateBuku(dbConn, books.ID, schema.Book{
 					Judul:       books.Judul,
 					Penerbit:    books.Penerbit,
 					Penulis:     books.Penulis,
@@ -159,7 +159,7 @@ func MenuLogin(dbConn *gorm.DB) {
 				if err != nil {
 					fmt.Println("terjadi sebuah kesalahan :", err)
 				}
-				fmt.Println("Buku berhasil diupdate:", res)
+				fmt.Println("Buku berhasil diupdate")
 			} else if input == 4 {
 				var newBook schema.Book
 				fmt.Println("Hapus Buku : ")
@@ -207,6 +207,7 @@ func main() {
 		fmt.Println("1.\tRegister")
 		fmt.Println("2.\tLogin")
 		fmt.Println("3.\tLihat Daftar Buku")
+		fmt.Println("4.\tLihat Detail Buku")
 		fmt.Println("99.\tKeluar")
 		fmt.Println("=+=+=+=+=+=+=+=+=+=+=+=+=+")
 		fmt.Print("input menu pilihan : ")
@@ -219,6 +220,17 @@ func main() {
 			MenuLogin(dbConn)
 		case 3:
 			SelectBuku(dbConn)
+		case 4:
+			var books schema.Book
+			fmt.Print("Pilih id Buku : ")
+			fmt.Scanln(&books.ID)
+			book, _ := datastore.GetBukuById(dbConn, books.ID)
+			fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
+			fmt.Printf("| Judul\t\t: %s \n", book.Judul)
+			fmt.Printf("| Penerbit\t: %s \n", book.Penerbit)
+			fmt.Printf("| Penulis\t: %s \n", book.Penulis)
+			fmt.Printf("| Release\t: %d \n", book.TahunTerbit)
+			fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
 		case 99:
 			fmt.Println("Terimakasih banyak sudah mencoba program kami.")
 			return

@@ -44,7 +44,7 @@ func UpdateBuku(db *gorm.DB, id uint, books schema.Book) (schema.Book, error) {
 func TampilkanBuku(db *gorm.DB) ([]schema.Book, error) {
 	res := []schema.Book{}
 
-	qry := db.Find(&res)
+	qry := db.Select("id", "judul", "penerbit", "penulis", "tahun_terbit").Find(&res)
 
 	if qry.Error != nil {
 		fmt.Println("Terjadi kesalahan saat menampilkan buku: ", qry.Error)
