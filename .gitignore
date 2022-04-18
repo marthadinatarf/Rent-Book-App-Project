@@ -1,3 +1,6 @@
 .env
 .vscode/*
 .idea/*
+ers schema.User
+ers.Hp,
+sword: users.Password,
