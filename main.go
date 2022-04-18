@@ -190,7 +190,7 @@ func MenuLogin(dbConn *gorm.DB) {
 			} else if input == 6 {
 				var tglKembali string
 				var transaction schema.Transactions
-				fmt.Print("Pilih id Buku : ")
+				fmt.Print("Pilih id transaksi : ")
 				fmt.Scanln(&transaction.ID)
 				trans, _ := datastore.GetTransactionById(dbConn, transaction.ID)
 				fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
