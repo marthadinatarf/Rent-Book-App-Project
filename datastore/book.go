@@ -18,14 +18,27 @@ func InsertBuku(db *gorm.DB, newBook schema.Book) (schema.Book, error) {
 	return newBook, nil
 }
 
-func UpdateBuku(db *gorm.DB, updateJudul schema.Book) (schema.Book, error) {
-	res := db.Save(&updateJudul)
-
-	if res.Error != nil {
-		fmt.Println("Update Book Error : ", res.Error)
-		return schema.Book{}, res.Error
+func GetBukuById(db *gorm.DB, id uint) (schema.Book, error) {
+	book := schema.Book{}
+	if err := db.Select("judul", "penerbit", "penulis", "tahun_terbit").Where("id = ?", id).Find(&book).Error; err != nil {
+		fmt.Println("Get Book By Id Error:", err)
+		return book, err
 	}
-	return updateJudul, nil
+	return book, nil
+}
+
+func UpdateBuku(db *gorm.DB, id uint, books schema.Book) (schema.Book, error) {
+	query := db.Model(&books).Where("id = ?", id).Updates(schema.Book{
+		Judul:       books.Judul,
+		Penerbit:    books.Penerbit,
+		Penulis:     books.Penulis,
+		TahunTerbit: books.TahunTerbit,
+	})
+	if query.Error != nil {
+		fmt.Println("Update Book Error : ", query.Error)
+		return books, query.Error
+	}
+	return books, nil
 }
 
 func TampilkanBuku(db *gorm.DB) ([]schema.Book, error) {

@@ -83,57 +83,83 @@ func MenuLogin(dbConn *gorm.DB) {
 	if email == res.Email && password == res.Password {
 		fmt.Println(res.Nama, "Berhasi Login")
 		fmt.Println("")
-		id := res.ID
+		user_id := res.ID
 		for input != 9 {
-			fmt.Println("\t=========== DASHBOARD ===========")
-			fmt.Println("\t]> Selamat Datang,", res.Nama)
-			fmt.Println("\t---------------------------------")
-			fmt.Println("\t1.\tUpdate Profil")
-			fmt.Println("\t2.\tTambah Buku")
-			fmt.Println("\t3.\tUpdate Buku")
-			fmt.Println("\t4.\tDelete Buku")
-			fmt.Println("\t5.\tDaftar Buku Saya")
-			fmt.Println("\t6.\tPinjam Buku")
-			fmt.Println("\t7.\tKembalikan Buku")
-			fmt.Println("\t8.\tLogout")
-			fmt.Println("\t= = = = = = = = = = = = = = = = =")
-			fmt.Print("\tMasukkan pilihan menu :")
+			fmt.Println("=========== DASHBOARD ===========")
+			fmt.Println("]> Selamat Datang,", res.Nama)
+			fmt.Println("---------------------------------")
+			fmt.Println("1.\tUpdate Profil")
+			fmt.Println("2.\tTambah Buku")
+			fmt.Println("3.\tUpdate Buku")
+			fmt.Println("4.\tDelete Buku")
+			fmt.Println("5.\tDaftar Buku Saya")
+			fmt.Println("6.\tPinjam Buku")
+			fmt.Println("7.\tKembalikan Buku")
+			fmt.Println("8.\tLogout")
+			fmt.Println("= = = = = = = = = = = = = = = = =")
+			fmt.Print("Masukkan pilihan menu :")
 			fmt.Scanln(&input)
 			if input == 1 {
 				var nama string
 				fmt.Print("Ganti Nama : ")
 				fmt.Scanln(&nama)
-				updateNama, err := datastore.UpdateUser(dbConn, nama, id)
+				updateNama, err := datastore.UpdateUser(dbConn, nama, user_id)
 				if err != nil {
 					fmt.Println("terjadi sebuah kesalahan :", err)
 				}
 				res.Nama = updateNama.Nama
 			} else if input == 2 {
-				var newBook schema.Book
-
+				var books schema.Book
+				books.UserID = user_id
 				fmt.Print("Masukkan Judul Buku:")
-				fmt.Scanln(&newBook.Judul)
+				fmt.Scanln(&books.Judul)
 				fmt.Print("Masukkan Penerbit :")
-				fmt.Scanln(&newBook.Penerbit)
+				fmt.Scanln(&books.Penerbit)
 				fmt.Print("Masukkan Penulis :")
-				fmt.Scanln(&newBook.Penulis)
+				fmt.Scanln(&books.Penulis)
 				fmt.Print("Masukkan tahun terbit :")
-				fmt.Scanln(&newBook.TahunTerbit)
+				fmt.Scanln(&books.TahunTerbit)
 
-				_, err := datastore.InsertBuku(dbConn, newBook)
+				_, err := datastore.InsertBuku(dbConn, schema.Book{
+					Judul:       books.Judul,
+					Penerbit:    books.Penerbit,
+					Penulis:     books.Penulis,
+					TahunTerbit: books.TahunTerbit,
+					UserID:      books.UserID,
+				})
 				if err != nil {
-					fmt.Println("terjadi sebuah kesalahan :", err)
+					fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
 				}
 				fmt.Println("Buku berhasil ditambahkan")
 			} else if input == 3 {
-				var newBook schema.Book
-				fmt.Println("Ganti Judul : ")
-				fmt.Scanln(&newBook.Judul)
-				_, err := datastore.UpdateBuku(dbConn, newBook)
+				var books schema.Book
+				fmt.Print("Pilih id Buku : ")
+				fmt.Scanln(&books.ID)
+				book, _ := datastore.GetBukuById(dbConn, books.ID)
+				fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
+				fmt.Printf("| Judul\t: %s \n", book.Judul)
+				fmt.Printf("| Penerbit\t: %s \n", book.Penerbit)
+				fmt.Printf("| Penulis\t: %s \n", book.Penulis)
+				fmt.Printf("| Release\t: %d \n", book.TahunTerbit)
+				fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
+				fmt.Print("Edit Judul : ")
+				fmt.Scanln(&books.Judul)
+				fmt.Print("Edit Penerbit : ")
+				fmt.Scanln(&books.Penerbit)
+				fmt.Print("Edit Penulis : ")
+				fmt.Scanln(&books.Penulis)
+				fmt.Print("Edit Tahun Terbit : ")
+				fmt.Scanln(&books.TahunTerbit)
+				res, err := datastore.UpdateBuku(dbConn, books.ID, schema.Book{
+					Judul:       books.Judul,
+					Penerbit:    books.Penerbit,
+					Penulis:     books.Penulis,
+					TahunTerbit: books.TahunTerbit,
+				})
 				if err != nil {
 					fmt.Println("terjadi sebuah kesalahan :", err)
 				}
-				fmt.Println("Buku berhasil diupdate")
+				fmt.Println("Buku berhasil diupdate:", res)
 			} else if input == 4 {
 				var newBook schema.Book
 				fmt.Println("Hapus Buku : ")
