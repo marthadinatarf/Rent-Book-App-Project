@@ -92,10 +92,9 @@ func MenuLogin(dbConn *gorm.DB) {
 			fmt.Println("2.\tTambah Buku")
 			fmt.Println("3.\tUpdate Buku")
 			fmt.Println("4.\tDelete Buku")
-			fmt.Println("5.\tDaftar Buku Saya")
-			fmt.Println("6.\tPinjam Buku")
-			fmt.Println("7.\tKembalikan Buku")
-			fmt.Println("8.\tLogout")
+			fmt.Println("5.\tPinjam Buku")
+			fmt.Println("6.\tKembalikan Buku")
+			fmt.Println("9.\tLogout")
 			fmt.Println("= = = = = = = = = = = = = = = = =")
 			fmt.Print("Masukkan pilihan menu :")
 			fmt.Scanln(&input)
@@ -169,7 +168,52 @@ func MenuLogin(dbConn *gorm.DB) {
 					fmt.Println("terjadi sebuah kesalahan :", err)
 				}
 				fmt.Println("Buku berhasil dihapus")
+			} else if input == 5 {
+				//var transaction schema.Book
+				fmt.Print("Masukkan tanggal peminjaman : ")
+				//fmt.Scanln(&)
+				fmt.Print("Masukkan Penerbit :")
+				//fmt.Scanln(&books.Penerbit)
+				fmt.Print("Masukkan Penulis :")
+				//fmt.Scanln(&books.Penulis)
+				fmt.Print("Masukkan tahun terbit :")
+				//fmt.Scanln(&books.TahunTerbit)
+
+				// _, err := datastore.InsertBuku(dbConn, schema.Book{
+				// 	Judul:       books.Judul,
+				// 	Penerbit:    books.Penerbit,
+				// 	Penulis:     books.Penulis,
+				// 	TahunTerbit: books.TahunTerbit,
+				// 	UserID:      books.UserID,
+				// })
+				// if err != nil {
+				// 	fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
+				// }
+				fmt.Println("Buku berhasil ditambahkan")
+			} else if input == 6 {
+				//var transaction schema.Book
+				fmt.Print("Masukkan tanggal peminjaman : ")
+				//fmt.Scanln(&)
+				fmt.Print("Masukkan Penerbit :")
+				//fmt.Scanln(&books.Penerbit)
+				fmt.Print("Masukkan Penulis :")
+				//fmt.Scanln(&books.Penulis)
+				fmt.Print("Masukkan tahun terbit :")
+				//fmt.Scanln(&books.TahunTerbit)
+
+				// _, err := datastore.InsertBuku(dbConn, schema.Book{
+				// 	Judul:       books.Judul,
+				// 	Penerbit:    books.Penerbit,
+				// 	Penulis:     books.Penulis,
+				// 	TahunTerbit: books.TahunTerbit,
+				// 	UserID:      books.UserID,
+				// })
+				// if err != nil {
+				// 	fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
+				// }
+				fmt.Println("Buku berhasil ditambahkan")
 			}
+
 		}
 	} else {
 		fmt.Println("email dan password salah")
