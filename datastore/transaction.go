@@ -18,13 +18,14 @@ func InsertPinjamBUKU(db *gorm.DB, newPinjam schema.Transactions) (schema.Transa
 	return newPinjam, nil
 }
 
-func InsertKembaliBuku(db *gorm.DB, newKembali schema.Transactions) (schema.Transactions, error) {
-	res := db.Create(&newKembali)
+func UpdateKembaliBuku(db *gorm.DB, updateTanggal string, id uint) (schema.Transactions, error) {
+	res := schema.Transactions{}
+	qry := db.Model(&res).Where("id = ?", id).Update("nama", updateTanggal)
 
-	if res.Error != nil {
-		fmt.Println("Insert Book Error : ", res.Error)
-		return schema.Transactions{}, res.Error
+	if qry.Error != nil {
+		fmt.Println("Error Update User: ", qry.Error)
+		return schema.Transactions{}, qry.Error
 	}
 
-	return newKembali, nil
+	return res, nil
 }
