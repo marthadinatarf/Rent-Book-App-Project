@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -28,8 +26,8 @@ type Book struct {
 
 type Transactions struct {
 	gorm.Model
-	TanggalPinjam  time.Time
-	TanggalKembali time.Time
+	TanggalPinjam  string
+	TanggalKembali string
 	UserID         uint
 	BookID         uint
 }

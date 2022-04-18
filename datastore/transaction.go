@@ -20,7 +20,7 @@ func InsertPinjamBUKU(db *gorm.DB, newPinjam schema.Transactions) (schema.Transa
 
 func UpdateKembaliBuku(db *gorm.DB, updateTanggal string, id uint) (schema.Transactions, error) {
 	res := schema.Transactions{}
-	qry := db.Model(&res).Where("id = ?", id).Update("nama", updateTanggal)
+	qry := db.Model(&res).Where("id = ?", id).Update("tanggal_kembali", updateTanggal)
 
 	if qry.Error != nil {
 		fmt.Println("Error Update User: ", qry.Error)
@@ -28,4 +28,12 @@ func UpdateKembaliBuku(db *gorm.DB, updateTanggal string, id uint) (schema.Trans
 	}
 
 	return res, nil
+}
+func GetTransactionById(db *gorm.DB, id uint) (schema.Transactions, error) {
+	trans := schema.Transactions{}
+	if err := db.Select("tanggal_pinjam", "user_id", "book_id").Where("id = ?", id).Find(&trans).Error; err != nil {
+		fmt.Println("Get Book By Id Error:", err)
+		return trans, err
+	}
+	return trans, nil
 }

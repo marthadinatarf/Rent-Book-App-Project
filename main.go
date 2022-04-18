@@ -110,13 +110,13 @@ func MenuLogin(dbConn *gorm.DB) {
 			} else if input == 2 {
 				var books schema.Book
 				books.UserID = user_id
-				fmt.Print("Masukkan Judul Buku:")
+				fmt.Print("Masukkan Judul Buku : ")
 				fmt.Scanln(&books.Judul)
-				fmt.Print("Masukkan Penerbit :")
+				fmt.Print("Masukkan Penerbit : ")
 				fmt.Scanln(&books.Penerbit)
-				fmt.Print("Masukkan Penulis :")
+				fmt.Print("Masukkan Penulis : ")
 				fmt.Scanln(&books.Penulis)
-				fmt.Print("Masukkan tahun terbit :")
+				fmt.Print("Masukkan tahun terbit : ")
 				fmt.Scanln(&books.TahunTerbit)
 
 				_, err := datastore.InsertBuku(dbConn, schema.Book{
@@ -169,50 +169,42 @@ func MenuLogin(dbConn *gorm.DB) {
 				}
 				fmt.Println("Buku berhasil dihapus")
 			} else if input == 5 {
-				//var transaction schema.Transactions
-				//transaction
+				var transaction schema.Transactions
+				transaction.UserID = user_id
 				fmt.Print("Masukkan tanggal peminjaman : ")
-				//fmt.Scanln(&)
-				fmt.Print("Masukkan Penerbit :")
-				//fmt.Scanln(&books.Penerbit)
-				fmt.Print("Masukkan Penulis :")
-				//fmt.Scanln(&books.Penulis)
-				fmt.Print("Masukkan tahun terbit :")
+				fmt.Scanln(&transaction.TanggalPinjam)
+				fmt.Println("Masukkan ID Buku : ")
+				fmt.Scanln(&transaction.BookID)
+				// fmt.Println("Masukkan tahun terbit : ")
 				//fmt.Scanln(&books.TahunTerbit)
 
-				// _, err := datastore.InsertBuku(dbConn, schema.Book{
-				// 	Judul:       books.Judul,
-				// 	Penerbit:    books.Penerbit,
-				// 	Penulis:     books.Penulis,
-				// 	TahunTerbit: books.TahunTerbit,
-				// 	UserID:      books.UserID,
-				// })
-				// if err != nil {
-				// 	fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
-				// }
-				fmt.Println("Buku berhasil ditambahkan")
+				_, err := datastore.InsertPinjamBUKU(dbConn, schema.Transactions{
+					TanggalPinjam: transaction.TanggalPinjam,
+					UserID:        transaction.UserID,
+					BookID:        transaction.BookID,
+				})
+				if err != nil {
+					fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
+				}
+				fmt.Println("Transaksi peminjaman berhasil")
 			} else if input == 6 {
-				//var transaction schema.Book
-				fmt.Print("Masukkan tanggal peminjaman : ")
-				//fmt.Scanln(&)
-				fmt.Print("Masukkan Penerbit :")
-				//fmt.Scanln(&books.Penerbit)
-				fmt.Print("Masukkan Penulis :")
-				//fmt.Scanln(&books.Penulis)
-				fmt.Print("Masukkan tahun terbit :")
-				//fmt.Scanln(&books.TahunTerbit)
-
-				// _, err := datastore.InsertBuku(dbConn, schema.Book{
-				// 	Judul:       books.Judul,
-				// 	Penerbit:    books.Penerbit,
-				// 	Penulis:     books.Penulis,
-				// 	TahunTerbit: books.TahunTerbit,
-				// 	UserID:      books.UserID,
-				// })
-				// if err != nil {
-				// 	fmt.Println("Terjadi kesalahan saat tambah Buku :", err)
-				// }
-				fmt.Println("Buku berhasil ditambahkan")
+				var tglKembali string
+				var transaction schema.Transactions
+				fmt.Print("Pilih id Buku : ")
+				fmt.Scanln(&transaction.ID)
+				trans, _ := datastore.GetTransactionById(dbConn, transaction.ID)
+				fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
+				fmt.Printf("| tanggal peminjaman\t: %s \n", trans.TanggalPinjam)
+				fmt.Printf("| book id\t: %d \n", trans.BookID)
+				fmt.Printf("| user id\t: %d \n", trans.UserID)
+				fmt.Println("-+-+-+-+-+-+-+-+-+-+-+")
+				fmt.Print("Masukkan tanggal kembali : ")
+				fmt.Scanln(&tglKembali)
+				_, err := datastore.UpdateKembaliBuku(dbConn, tglKembali, user_id)
+				if err != nil {
+					fmt.Println("terjadi sebuah kesalahan :", err)
+				}
+				fmt.Println("Buku berhasil diupdate")
 			}
 
 		}
@@ -240,8 +232,8 @@ func main() {
 
 	// membuat database migration
 	// dbConn.AutoMigrate(
-	// 	&schema.User{},
-	// 	&schema.Book{},
+	// 	// 	&schema.User{},
+	// 	// 	&schema.Book{},
 	// 	&schema.Transactions{},
 	// )
 
