@@ -169,7 +169,8 @@ func MenuLogin(dbConn *gorm.DB) {
 				}
 				fmt.Println("Buku berhasil dihapus")
 			} else if input == 5 {
-				//var transaction schema.Book
+				//var transaction schema.Transactions
+				//transaction
 				fmt.Print("Masukkan tanggal peminjaman : ")
 				//fmt.Scanln(&)
 				fmt.Print("Masukkan Penerbit :")
